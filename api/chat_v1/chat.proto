@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package chat_v1;
+
+option go_package = "pkg/chat_v1;chat_v1";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+// Сервис чата
+service ChatService {
+  // Создание нового чата
+  rpc Create(CreateChatRequest) returns (CreateChatResponse);
+  // Удаление чата по ID
+  rpc Delete(DeleteChatRequest) returns (google.protobuf.Empty);
+  // Отправка сообщения в чат (в данном примере без указания ID чата, просто отправка)
+  rpc SendMessage(SendMessageRequest) returns (google.protobuf.Empty);
+}
+
+// Запрос на создание чата
+message CreateChatRequest {
+  repeated string usernames = 1; // список участников (логины)
+}
+
+// Ответ с ID созданного чата
+message CreateChatResponse {
+  int64 id = 1;
+}
+
+// Запрос на удаление чата
+message DeleteChatRequest {
+  int64 id = 1;
+}
+
+// Запрос на отправку сообщения
+message SendMessageRequest {
+  string from = 1;                      // отправитель
+  string text = 2;                     // текст сообщения
+  google.protobuf.Timestamp timestamp = 3; // время отправки
+}
